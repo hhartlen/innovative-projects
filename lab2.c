@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+#define BUFSIZE 256
 
 int main(int argc, char** argv) {
     if (argc != 2) {
@@ -7,12 +10,10 @@ int main(int argc, char** argv) {
         return -1;
     }
 
-    // Use a safer approach with execvp instead of system
-    char *args[] = {"wc", "-c", argv[1], NULL};
-    if (execvp("wc", args) == -1) {
-        perror("Error executing wc");
-        return -1;
-    }
+    char cmd[BUFSIZE];  // Fixed-size buffer
+    strcpy(cmd, "wc -c < "); // Unsafe: No bounds checking
+    strcat(cmd, argv[1]);    // Unsafe: Can overflow buffer
 
+    system(cmd);
     return 0;
 }
