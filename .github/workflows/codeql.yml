@@ -76,16 +76,17 @@ jobs:
     # to build your code.
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
-    - if: matrix.build-mode == 'manual'
-  shell: bash
-  run: |
-    echo "Building C programs for CodeQL analysis..."
-    gcc -o main lab2.c
-    gcc -o lab2fixed lab2fixedcode.c
-    echo "Build completed!"
+     - name: Build C Programs
+      if: matrix.build-mode == 'manual'
+      run: |
+        echo "Building C programs for CodeQL analysis..."
+        gcc -o main lab2.c
+        gcc -o lab2fixed lab2fixedcode.c
+        echo "Build completed!"
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
       with:
-        category: "/language:${{matrix.language}}"
+        category: "/language:${{ matrix.language }}"
+
 
