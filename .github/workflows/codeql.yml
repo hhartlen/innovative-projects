@@ -84,7 +84,6 @@ jobs:
     gcc -o lab2fixed lab2fixedcode.c
     echo "Build completed!"
 
-
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
       with:
