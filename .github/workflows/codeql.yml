@@ -77,46 +77,16 @@ jobs:
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
     - if: matrix.build-mode == 'manual'
-      shell: bash
-      run: |
-        echo 'If you are using a "manual" build mode for one or more of the' \
-          'languages you are analyzing, replace this with the commands to build' \
-          'your code, for example:'
-        echo '  make bootstrap'
-        echo '  make release'
-        exit 1
+  shell: bash
+  run: |
+    echo "Building C programs for CodeQL analysis..."
+    gcc -o main lab2.c
+    gcc -o lab2fixed lab2fixedcode.c
+    echo "Build completed!"
+
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
       with:
         category: "/language:${{matrix.language}}"
-name: "CodeQL Analysis"
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  schedule:
-    - cron: '0 12 * * 1'  # Runs every Monday at 12 PM UTC
-
-jobs:
-  analyze:
-    name: Analyze
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
-        with:
-          languages: cpp  # Ensures CodeQL scans C code
-
-      - name: Build All C Files
-        run: |
-          gcc -o main lab2.c
-          gcc -o lab2fixed lab2fixedcode.c
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
