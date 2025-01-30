@@ -1,2 +1,2 @@
 all:
-	gcc -o main lab2.c
+	gcc -o main lab2fixedcode.c
